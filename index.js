@@ -110,9 +110,9 @@ const generateRTCToken = (req, resp) => {
 };
 
 // // Configure CORS and routes
-// app.options('*', cors());
+app.options('*', cors());
 // Apply CORS middleware to all routes
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 // Define API endpoints
 app.get('/ping', nocache, ping);
 app.get('/rtc/:channel/:role/:tokentype/:uid', nocache, generateRTCToken); // Endpoint for RTC token generation
