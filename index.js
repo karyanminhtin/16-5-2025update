@@ -15,7 +15,15 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const APP_ID = process.env.APP_ID;
 const APP_CERTIFICATE = process.env.APP_CERTIFICATE;
+const WHITE_DOMAIN = process.env.WHITE_DOMAIN;
+const WHITE_URL = process.env.WHITE_URL;
+// const whitelist = [WHITE_DOMAIN, WHITE_URL];
+const whitelist = ['http://localhost:3000', 'https://example.com'];
 
+var corsOptions = {
+  origin: ['https://bubble.io'],
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 /**
  * Middleware to prevent caching of responses
  * This ensures tokens are always generated fresh
@@ -101,9 +109,10 @@ const generateRTCToken = (req, resp) => {
   return resp.json({ rtcToken: token });
 };
 
-// Configure CORS and routes
-app.options('*', cors());
-
+// // Configure CORS and routes
+// app.options('*', cors());
+// Apply CORS middleware to all routes
+app.use(cors(corsOptions));
 // Define API endpoints
 app.get('/ping', nocache, ping);
 app.get('/rtc/:channel/:role/:tokentype/:uid', nocache, generateRTCToken); // Endpoint for RTC token generation
